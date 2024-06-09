@@ -1,0 +1,38 @@
+import csv
+import requests
+
+# Function to read data from CSV file
+def read_csv(file_path):
+    data = []
+    with open(file_path, 'r') as csv_file:
+        csv_reader = csv.reader(csv_file)
+        # Skip header if present
+        next(csv_reader)
+        for row in csv_reader:
+            data.append(row)
+    return data
+
+# Function to make HTTP request with data from CSV
+def make_http_request(url, data):
+    for row in data:
+        payload = {
+            'param1': row[0],  # Assuming column 1 contains parameter 1
+            'param2': row[1]   # Assuming column 2 contains parameter 2
+            # Add more parameters as needed
+        }
+        response = requests.post(url, data=payload)
+        print(f"Response for {row}: {response.text}")
+
+# Main function
+def main():
+    csv_file_path = 'data.csv'  # Path to your CSV file
+    url = 'http://example.com/api'  # URL of the HTTP endpoint
+
+    # Read data from CSV
+    data = read_csv(csv_file_path)
+
+    # Make HTTP request with data from CSV
+    make_http_request(url, data)
+
+if __name__ == "__main__":
+    main()
